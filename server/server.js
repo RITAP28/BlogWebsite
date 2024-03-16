@@ -41,4 +41,5 @@ app.use("/api/user", userRoutes);
 app.use('/user', authRoutes);
 app.use('/user', postRoutes);
 
+
 app.listen(PORT, () => console.log(`Server listening on ${PORT}`));

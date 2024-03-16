@@ -46,26 +46,21 @@ async function handleLogin(req, res, next) {
     next(errorHandler(400, "All fields are required"));
   }
   try {
-    const validUser = await User.findOne({ username: name }).select(
-      "+password"
-    );
+    const validUser = await User.findOne({ username: name }).select("+password");
+
     if (!validUser) {
       return next(errorHandler(404, "User not found"));
     }
     const storedHashedPassword = validUser.password;
+    
     const validPassword = await bcrypt.compare(password, storedHashedPassword);
-    console.log("is Password valid:", validPassword);
-    if (validPassword) {
-      console.log("Logging in");
-      console.log(JSON.stringify(validUser));
-      //seperating the password from the response
-      const { password: pass, profilePicture: proPic, ...rest } = validUser._doc;
-      sendToken(rest, 200, res);
-    } else {
-      res.status(500).json({
-        msg: "Invalid Password",
-      });
+
+    if (!validPassword) {
+      return next(errorHandler(404, "Invalid Credentials"));
     }
+
+    const { password: pass, profilePicture: proPic, ...rest } = validUser._doc;
+    sendToken(rest, 200, res);
   } catch (err) {
     console.error(err);
   }
@@ -107,25 +102,7 @@ async function handleGoogleAuth(req, res, next) {
   try {
     const validUser = await User.findOne({ email });
     if (validUser) {
-      const refreshToken = jwt.sign(
-        {
-          id: validUser._id,
-        },
-        process.env.REFRESH_TOKEN_KEY,
-        {
-          expiresIn: process.env.COOKIE_EXPIRE * 24 * 60 * 60 * 1000,
-        }
-      );
-      res
-        .status(200)
-        .cookie("token", refreshToken, {
-          httpOnly: true,
-          sameSite: "None",
-          secure: true,
-        })
-        .json({
-          msg: "Login successful",
-        });
+      sendToken(validUser, 200, res);
     } else {
       console.log('No sign in as user does not exist. reached sign up instead.');
       const generatePassword = Math.round().toString(36).slice(-8) + Math.random().toString(36).slice(-8);

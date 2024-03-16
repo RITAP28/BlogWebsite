@@ -19,6 +19,7 @@
     "@tiptap/react": "^2.2.3",
     "@tiptap/starter-kit": "^2.2.3",
     "axios": "^1.6.7",
+    "date-fns": "^3.5.0",
     "firebase": "^10.8.0",
     "flowbite-react": "^0.7.2",
     "novel": "^0.2.6",

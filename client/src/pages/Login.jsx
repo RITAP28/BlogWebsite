@@ -27,22 +27,15 @@ const Login = () => {
   const onSubmit = async (data) => {
     try {
       dispatch(SignInStart());
-      const res = await axios
-        .post("http://localhost:3000/user/login", {
-          username: data.username,
-          password: data.password,
-        })
-        .then(() => {
-          if (!data.username || !data.password) {
-            return dispatch(SignInFailure("Please fill out all fields"));
-          }
-          navigate(-1);
-          console.log(data);
-          dispatch(SignInSuccess(data));
-          console.log(data);
-        });
-        window.alert(`Welcome ${data.username}`);
-        // console.log(res);
+      const res = await axios.post("http://localhost:3000/user/login", {
+        username: data.username,
+        password: data.password,
+      });
+      console.log(res);
+      navigate(-1);
+      dispatch(SignInSuccess(data));
+      window.alert(`Welcome ${data.username}`);
+      // console.log(res);
     } catch (error) {
       dispatch(SignInFailure(error.message));
     }

@@ -12,19 +12,15 @@ const BlogInterface = () => {
   const [posts, setPosts] = useState([]);
   const { isAuthenticated } = useSelector((state) => state.user);
   const navigate = useNavigate();
-  const Posts = [];
   const getPosts = async () => {
     try {
       const res = await axios.get("http://localhost:3000/user/getallposts");
-      const data = await res.json();
-      console.log(data.posts);
-      return Posts
+      setPosts(res.data);
+      // console.log(res.data[0]);
     } catch (error) {
       console.error(error);
     }
   };
-
-  console.log(Posts);
 
   useEffect(() => {
     getPosts();
@@ -32,12 +28,12 @@ const BlogInterface = () => {
 
   return (
     <div>
-      {Posts.map((blog, index) => (
+      {posts.map((blog, index) => (
         <div 
           key={index} 
           className="hover:bg-slate-100 hover:cursor-pointer"
-          onClick={() => {
-            navigate(`/blog/${blog._id}`);
+          onClick={async () => {
+            navigate(`/blog/?author=${blog.authorName}&blogid=${blog._id}`);
           }}
         >
           <div className="flex flex-row mt-2">
@@ -54,7 +50,9 @@ const BlogInterface = () => {
                   {blog.authorName}
                 </div>
                 {/* div for date */}
-                <div className="basis-1/4">Date</div>
+                <div className="basis-1/4 font-Kanit">
+                  {new Date(blog.updatedAt).toLocaleDateString()}
+                </div>
               </div>
               {/* div for the title */}
               <div className="flex justify-center items-center my-8">
@@ -93,7 +91,7 @@ const BlogInterface = () => {
             <hr className="w-[80%]" />
           </div>
         </div>
-      ))}
+      )).reverse()}
     </div>
   );
 };
