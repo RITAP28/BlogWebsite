@@ -12,22 +12,26 @@ const BlogContent = () => {
   const [post, setPost] = useState();
   const urlParams = new URLSearchParams(window.location.search);
   const blogId = urlParams.get("blogid");
-  const getSinglePost = async () => {
-    try {
-      const res = await axios.get(`http://localhost:3000/user/getpost/${blogId}`, { withCredentials: true });
-      // const post = await res.data;
-      console.log(res);
-      setPost(res.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  console.log(post);
+  // const getSinglePost = async () => {
+  //   try {
+  //     if(!blogId) return;
+  //     const res = await axios.get(`http://localhost:3000/user/getpost/${blogId}`, { withCredentials: true });
+  //     // const post = await res.data;
+  //     setPost(res.data);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   useEffect(() => {
+    async function getSinglePost(){
+      const res = await axios.get(`http://localhost:3000/user/getpost/${blogId}`, { withCredentials: true });
+      setPost(res.data);
+    };
+
     getSinglePost();
-  }, []);
+    console.log(post);
+  }, [blogId]);
 
   return (
     <>
@@ -45,7 +49,8 @@ const BlogContent = () => {
       <div className="">
         <div className="pt-6">
           <p className="font-Kanit font-bold pl-4 text-4xl">
-            {post.title}
+            {/* {post.title} */}
+            Title
           </p>
         </div>
         <div className="flex pt-4">
@@ -55,7 +60,10 @@ const BlogContent = () => {
             </div>
           </div>
           <div className="basis-2/3 font-Kanit">
-            <p className="">{post.authorName}</p>
+            <p className="">
+              {/* {post.authorName} */}
+              Author
+            </p>
             <button className="border rounded-md font-ClimateCrisis px-4 bg-red-400 text-base py-1">
               Follow
             </button>
@@ -81,7 +89,8 @@ const BlogContent = () => {
       </div>
       <div className="mt-8">
         <div className="px-2 font-Kanit text-2xl">
-          {post.content}
+          {/* {post.content} */}
+          Content
         </div>
       </div>
     </>

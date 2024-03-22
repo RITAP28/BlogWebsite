@@ -1,4 +1,4 @@
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 
 const sendToken = (user, statusCode, res) => {
     const token = jwt.sign({username: user.username}, process.env.REFRESH_TOKEN_KEY);
@@ -9,10 +9,10 @@ const sendToken = (user, statusCode, res) => {
         ),
         httpOnly: true,
         secure: false,
-        sameSite: 'Lax',
+        sameSite: 'Strict',
     };
 
-    res.status(statusCode).cookie("token", token, options).json({
+    res.status(statusCode).cookie('token', token, options).json({
         success: true,
         user,
         token,

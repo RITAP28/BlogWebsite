@@ -30,7 +30,7 @@ const Login = () => {
       const res = await axios.post("http://localhost:3000/user/login", {
         username: data.username,
         password: data.password,
-      });
+      }, { withCredentials: true });
       console.log(res);
       navigate(-1);
       dispatch(SignInSuccess(data));

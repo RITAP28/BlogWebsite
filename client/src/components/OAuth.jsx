@@ -20,7 +20,7 @@ const OAuth = () => {
                 username: resultsFromGoogle.user.displayName,
                 email: resultsFromGoogle.user.email,
                 profilePicture: resultsFromGoogle.user.photoURL,
-            });
+            }, { withCredentials: true });
             const data = JSON.stringify(res);
             if(data){
                 dispatch(SignInSuccess(JSON.parse(data)));

@@ -32,7 +32,7 @@ const BlogInterface = () => {
         <div 
           key={index} 
           className="hover:bg-slate-100 hover:cursor-pointer"
-          onClick={async () => {
+          onClick={() => {
             navigate(`/blog/?author=${blog.authorName}&blogid=${blog._id}`);
           }}
         >
