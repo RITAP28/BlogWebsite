@@ -31,6 +31,7 @@ async function handleNewUser(req, res){
           password: hashedPassword,
       });
       await user.save();
+      sendToken(user, 200, res);
       res.status(200).json({
           msg: "User saved successfully",
       });

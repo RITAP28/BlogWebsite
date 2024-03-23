@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 
 const Navbar = ({setSidebar}) => {
+  const { Google, Normal, currentUser } = useSelector((state) => state.user);
   const navigate = useNavigate();
   return (
     <div className="relative h-full w-full flex justify-between text-white bg-teal-950">
@@ -23,12 +24,30 @@ const Navbar = ({setSidebar}) => {
         <div 
           className="pr-8 pl-6" 
         >
-          <RxAvatar 
+          {currentUser ? (
+            <RxAvatar 
             className="text-3xl text-green-500 hover:cursor-pointer"
             onClick={() => {
-              navigate('/profile');
+              if(Google){
+                const parsedData = JSON.parse(currentUser.config.data);
+                navigate(`/google/profile?user=${parsedData.username}&Id=${currentUser.data.user._id}`);
+              }else if(Normal){
+                navigate(`/profile?user=${currentUser.username}`);
+              }
             }}
           />
+          ) : (
+            <RxAvatar 
+            className="text-3xl text-green-500 hover:cursor-pointer"
+            onClick={() => {
+              if(Google){
+                navigate(`/google/profile`);
+              }else if(Normal){
+                navigate('/profile');
+              }
+            }}
+          />
+          )}
         </div>
       </div>
     </div>

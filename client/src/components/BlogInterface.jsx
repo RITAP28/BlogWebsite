@@ -33,7 +33,7 @@ const BlogInterface = () => {
           key={index} 
           className="hover:bg-slate-100 hover:cursor-pointer"
           onClick={() => {
-            navigate(`/blog/?author=${blog.authorName}&blogid=${blog._id}`);
+            navigate(`/blog?author=${blog.authorName}&blogid=${blog._id}`);
           }}
         >
           <div className="flex flex-row mt-2">

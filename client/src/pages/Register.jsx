@@ -3,11 +3,14 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import OAuth from "../components/OAuth";
+import { useDispatch } from "react-redux";
+import { SignUpSuccess } from "../redux/Slices/userSlice";
 
 const Register = () => {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
@@ -29,6 +32,7 @@ const Register = () => {
         if(!data.username || !data.email || !data.password){
           return setErrorMessage('Please fill out all fields');
         };
+        dispatch(SignUpSuccess(data));
         navigate("/");
         console.log(data);
         setLoading(false);

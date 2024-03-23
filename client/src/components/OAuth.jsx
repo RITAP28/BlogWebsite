@@ -2,7 +2,7 @@ import React from "react";
 import { GoogleAuthProvider, signInWithPopup, getAuth, signInWithRedirect } from 'firebase/auth';
 import { app } from '../firebase'
 import axios from 'axios';
-import { SignInSuccess } from '../redux/Slices/userSlice';
+import { SignInFailure, SignInSuccessWithGoogle } from '../redux/Slices/userSlice';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
@@ -23,7 +23,7 @@ const OAuth = () => {
             }, { withCredentials: true });
             const data = JSON.stringify(res);
             if(data){
-                dispatch(SignInSuccess(JSON.parse(data)));
+                dispatch(SignInSuccessWithGoogle(JSON.parse(data)));
                 navigate('/');
                 console.log(data);
             };
@@ -32,6 +32,7 @@ const OAuth = () => {
             // console.log(res);
         } catch (error) {
             console.log(error);
+            dispatch(SignInFailure(error.message));
         }
     }
     return (

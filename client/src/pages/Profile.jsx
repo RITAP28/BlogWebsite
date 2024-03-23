@@ -1,14 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import { useSelector } from "react-redux";
 import { Avatar } from "flowbite-react";
 import { RxAvatar } from "react-icons/rx";
+import axios from "axios";
 
 const Profile = () => {
   const [sidebar, setSidebar] = useState(false);
+  const [posts, setPosts] = useState([]);
   const { currentUser } = useSelector((state) => state.user);
   const parsedData = JSON.parse(currentUser.config.data);
+  const urlParams = new URLSearchParams(window.location.search);
+  const userId = urlParams.get('Id');
+  const getNumberOfPosts = async () => {
+    try {
+      const res = await axios.get(`http://localhost:3000/user/numberofposts/${userId}`, { withCredentials: true });
+      setPosts(res.data);
+      console.log(posts);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  // useEffect(() => {
+  //   getNumberOfPosts();
+  // }, [userId]);
   return (
     <>
       {sidebar ? (
@@ -39,7 +56,10 @@ const Profile = () => {
             <div className="flex font-Kanit">
                 <div className="basis-1/3 flex justify-center ">
                     <div className="flex flex-col">
-                        <p className="flex justify-center text-2xl">10</p>
+                        <p className="flex justify-center text-2xl">
+                          {/* {posts.length()} */}
+                          10
+                        </p>
                         <p className="flex justify-center text-lg -mt-2">posts</p>
                     </div>
                 </div>
@@ -67,7 +87,7 @@ const Profile = () => {
                 About Yourself
             </div>
             <div className="font-Kanit p-2 text-xl">
-                Subscriptions
+                {parsedData.username}
             </div>
         </div>
       </div>

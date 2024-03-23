@@ -6,13 +6,17 @@ import { useSelector } from "react-redux";
 import { Avatar } from "flowbite-react";
 import ContentSpace from "./ContentSpace";
 import { IoMdCloseCircle } from "react-icons/io";
+import axios from "axios";
 
 const NewBlog = () => {
   const { currentUser } = useSelector((state) => state.user);
   const [draftConfirm, setDraftConfirm] = useState(false);
+  const [treeLoading, setTreeLoading] = useState(false);
   const [draft, setDraft] = useState(false);
   const [showProfileDropdown, setShowProfileDropDown] = useState(false);
   const [showMoreDropdown, setShowMoreDropdown] = useState(false);
+  const [title, setTitle] = useState('');
+  const [textarea, setTextArea] = useState('');
   const parsedData = JSON.parse(currentUser.config.data);
   const toggleProfileDropdown = () => {
     if (showProfileDropdown === false) {
@@ -37,6 +41,35 @@ const NewBlog = () => {
     if (e.target.id === "popupsavedraftform") {
       setDraftConfirm(false);
     }
+  }
+  function handleTitle(e) {
+    setDraft(true);
+    setTitle(e.target.value);
+  }
+  function handleTextArea(e){
+    setTextArea(e.target.value);
+  }
+  async function handlePublish() {
+    setTreeLoading(true);
+    try {
+      const res = await axios.post(
+        "http://localhost:3000/user/new-story",
+        {
+          title: title,
+          content: textarea,
+        },
+        { withCredentials: true }
+      );
+      setTitle('');
+      setTextArea('');
+      console.log(res);
+      navigate("/");
+      window.alert("Blog published successfully!");
+    } catch (error) {
+      console.error(error);
+      window.alert("Something went wrong while publishing");
+    }
+    setTreeLoading(false);
   }
   return (
     <>
@@ -92,23 +125,37 @@ const NewBlog = () => {
           <div className="flex flex-row">
             <div className="basis-1/3 flex justify-center items-center">
               <div className="w-1/2 h-1/2 rounded-full">
-                <Avatar
-                  className="h-full w-full object-cover"
-                  img={parsedData.profilePicture}
-                />
+                {parsedData ? (
+                  <Avatar
+                    className="h-full w-full object-cover"
+                    img={parsedData.profilePicture}
+                  />
+                ) : (
+                  <RxAvatar className="h-full w-full object-cover" />
+                )}
+                {null}
               </div>
             </div>
             <div className="basis-2/3">
               <div className="w-full text-black font-Kanit flex justify-start pl-4 item-center">
-                {parsedData.username}
+                {parsedData ? parsedData.username : currentUser.username}
+                {/* {currentUser.username} */}
               </div>
               <div className="w-full font-Kanit">
                 @
-                {parsedData.email
-                  .toLowerCase()
-                  .split(" ")
-                  .join("")
-                  .slice(0, 15)}
+                {parsedData
+                  ? parsedData.email
+                      .toLowerCase()
+                      .split(" ")
+                      .join("")
+                      .slice(0, 15)
+                  : currentUser.email
+                      .toLowerCase()
+                      .split(" ")
+                      .join("")
+                      .slice(0, 15)}
+                {/* {currentUser.email.toLowerCase().split(" ").join("").slice(0, 15)} */}
+                {/* {null} */}
               </div>
             </div>
           </div>
@@ -116,10 +163,10 @@ const NewBlog = () => {
             className="py-2 text-sm dark:text-gray-200 font-Kanit"
             aria-labelledby="dropdownDefaultButton"
           >
-            <li 
+            <li
               className="block px-4 py-2 text-black hover:cursor-pointer hover:bg-slate-100 rounded-md"
               onClick={() => {
-                navigate('/profile')
+                navigate("/profile");
               }}
             >
               Profile
@@ -189,8 +236,12 @@ const NewBlog = () => {
           </div>
           <div className="basis-1/2 flex flex-row justify-end text-white">
             <div className="flex justify-end items-center px-2">
-              <button className="bg-green-400 px-2 py-1 rounded-xl text-teal-950 font-bold hover:cursor-pointer">
-                Publish
+              <button
+                className="bg-green-400 px-2 py-1 rounded-xl text-teal-950 font-bold hover:cursor-pointer"
+                onClick={handlePublish}
+                disabled={treeLoading}
+              >
+                {treeLoading ? "Publishing..." : "Publish"}
               </button>
             </div>
             <div
@@ -215,7 +266,30 @@ const NewBlog = () => {
             setShowProfileDropDown(!prev);
           }}
         >
-          <ContentSpace setDraft={setDraft}  />
+          {/* <ContentSpace setDraft={setDraft} /> */}
+          <div>
+            {/* Title */}
+            <div className="py-4">
+              <input
+                id="title"
+                type="text"
+                className="pl-2 py-4 text-3xl font-bold font-Kanit w-full"
+                placeholder="Title"
+                onChange={handleTitle}
+              />
+            </div>
+            {/* Content */}
+            <div className="">
+              {/* <TipTapEditor /> */}
+              <textarea
+                name=""
+                id="content"
+                className="w-full pl-2 py-4 font-sans text-lg h-screen"
+                placeholder="Write Here"
+                onChange={handleTextArea}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </>
