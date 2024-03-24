@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoIosMore } from "react-icons/io";
 import { RxAvatar } from "react-icons/rx";
 import { useNavigate, Link } from "react-router-dom";
@@ -9,7 +9,7 @@ import { IoMdCloseCircle } from "react-icons/io";
 import axios from "axios";
 
 const NewBlog = () => {
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser, Google, Normal } = useSelector((state) => state.user);
   const [draftConfirm, setDraftConfirm] = useState(false);
   const [treeLoading, setTreeLoading] = useState(false);
   const [draft, setDraft] = useState(false);
@@ -17,7 +17,16 @@ const NewBlog = () => {
   const [showMoreDropdown, setShowMoreDropdown] = useState(false);
   const [title, setTitle] = useState('');
   const [textarea, setTextArea] = useState('');
-  const parsedData = JSON.parse(currentUser.config.data);
+  const [parsedData, setParsedData] = useState();
+  // only available for google accounts
+  // const parsedData = JSON.parse(currentUser.config.data);
+  function diffProfiles(){
+    if(Google){
+      setParsedData(JSON.parse(currentUser.config.data));
+    } else if(Normal){
+      setParsedData(currentUser);
+    };
+  };
   const toggleProfileDropdown = () => {
     if (showProfileDropdown === false) {
       setShowProfileDropDown(true);
@@ -71,6 +80,9 @@ const NewBlog = () => {
     }
     setTreeLoading(false);
   }
+  useEffect(() => {
+    diffProfiles();
+  }, [Google, Normal]);
   return (
     <>
       {draft && draftConfirm && (
@@ -125,7 +137,7 @@ const NewBlog = () => {
           <div className="flex flex-row">
             <div className="basis-1/3 flex justify-center items-center">
               <div className="w-1/2 h-1/2 rounded-full">
-                {parsedData ? (
+                {parsedData.profilePicture ? (
                   <Avatar
                     className="h-full w-full object-cover"
                     img={parsedData.profilePicture}
@@ -133,27 +145,23 @@ const NewBlog = () => {
                 ) : (
                   <RxAvatar className="h-full w-full object-cover" />
                 )}
-                {null}
+                {/* {null} */}
               </div>
             </div>
             <div className="basis-2/3">
               <div className="w-full text-black font-Kanit flex justify-start pl-4 item-center">
-                {parsedData ? parsedData.username : currentUser.username}
-                {/* {currentUser.username} */}
+                {/* {parsedData ? parsedData.username : currentUser.username} */}
+                {parsedData.username}
               </div>
               <div className="w-full font-Kanit">
                 @
-                {parsedData
+                {Google
                   ? parsedData.email
                       .toLowerCase()
                       .split(" ")
                       .join("")
                       .slice(0, 15)
-                  : currentUser.email
-                      .toLowerCase()
-                      .split(" ")
-                      .join("")
-                      .slice(0, 15)}
+                  : parsedData.username}
                 {/* {currentUser.email.toLowerCase().split(" ").join("").slice(0, 15)} */}
                 {/* {null} */}
               </div>

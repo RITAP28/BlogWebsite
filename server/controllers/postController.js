@@ -29,7 +29,7 @@ async function handleNewPost(req, res, next) {
 
 async function handleGetNumberOfPosts(req, res, next) {
   try {
-    const individualPosts = await Post.findById(req.params.id);
+    const individualPosts = await Post.find({ author: req.params.id });
     res.status(200).json(individualPosts);
   } catch (error) {
     console.error(error);
