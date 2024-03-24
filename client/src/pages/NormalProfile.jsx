@@ -8,9 +8,11 @@ import { MdOutlineBookmarkAdd } from "react-icons/md";
 import { IoIosRemoveCircleOutline } from "react-icons/io";
 import { IoIosMore } from "react-icons/io";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function NormalProfile() {
   const [sidebar, setSidebar] = useState(false);
+  const navigate = useNavigate();
   // const [loading, setLoading] = useState(false);
   const [posts, setPosts] = useState([]);
   const { currentUser } = useSelector((state) => state.user);
@@ -56,7 +58,12 @@ function NormalProfile() {
         </div>
         <div className="w-full">
           <div className="flex font-Kanit gap-2">
-            <div className="basis-1/3 flex justify-center bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 py-4 rounded-lg shadow-lg">
+            <div 
+              className="basis-1/3 flex justify-center bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 py-4 rounded-lg shadow-lg"
+              onClick={() => {
+                navigate(`/profile/posts?user=${currentUser.username}&Id=${userId}`);
+              }}
+            >
               <div className="flex flex-col">
                 <p className="flex justify-center text-2xl text-white">
                   {posts.length}

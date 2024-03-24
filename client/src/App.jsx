@@ -12,6 +12,7 @@ import { useSelector } from "react-redux";
 import NewBlog from "./pages/BlogPages/NewBlog";
 import Profile from "./pages/Profile";
 import NormalProfile from "./pages/NormalProfile";
+import IndividualPosts from "./pages/IndividualPosts";
 
 const App = () => {
   const { isAuthenticated } = useSelector(state => state.user);
@@ -61,6 +62,13 @@ const App = () => {
             </ProtectedRoutes>
           }   
         />
+        <Route 
+          path="/profile/posts"
+          element={
+            <ProtectedRoutes>
+              <IndividualPosts />
+            </ProtectedRoutes>
+          } />
 
       </Routes>
     </BrowserRouter>
