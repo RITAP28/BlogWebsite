@@ -22,10 +22,10 @@ const Navbar = ({setSidebar}) => {
 
   useEffect(() => {
     getUser();
-    console.log(loggedUser);
+    // there is an issue below, null printed twice
+    // console.log(loggedUser); 
   }, []);
 
-  console.log(loggedUser);
   return (
     <div className="relative h-full w-full flex justify-between text-white bg-teal-950">
       <div className="main-navbar flex justify-center items-center ml-4">

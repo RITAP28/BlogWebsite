@@ -4,12 +4,13 @@ import Sidebar from "../components/Sidebar";
 import { RxAvatar } from "react-icons/rx";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const BlogContent = () => {
   const [sidebar, setSidebar] = useState(false);
   const { currentUser } = useSelector((state) => state.user);
-  // const [searchParams, setSearchParams] = useSearchParams();
   const [post, setPost] = useState();
+  const navigate = useNavigate();
   const urlParams = new URLSearchParams(window.location.search);
   const blogId = urlParams.get("blogid");
   const getSinglePost = async () => {
@@ -70,27 +71,57 @@ const BlogContent = () => {
                     Follow
                   </button>
                 )}
-                
               </div>
             </div>
           </div>
-          <div className="flex mt-4">
-            <div className="basis-1/3 flex justify-center">
-              <button className="border rounded-md font-Kanit font-bold text-lg px-2 hover:cursor-pointer hover:bg-slate-200">
-                Share
-              </button>
+
+          {currentUser.username !== post.authorName ? (
+            <div>
+              <div className="flex mt-4">
+                <div className="basis-1/3 flex justify-center">
+                  <button className="border rounded-md font-Kanit font-bold text-lg px-2 hover:cursor-pointer hover:bg-slate-200">
+                    Share
+                  </button>
+                </div>
+                <div className="basis-1/3 flex justify-center">
+                  <button className="border rounded-md font-Kanit font-bold text-lg px-2 hover:cursor-pointer hover:bg-slate-200">
+                    Like
+                  </button>
+                </div>
+                <div className="basis-1/3 flex justify-center">
+                  <button className="border rounded-md font-Kanit font-bold text-lg px-2 hover:cursor-pointer hover:bg-slate-200">
+                    Upgrade Plan
+                  </button>
+                </div>
+              </div>
             </div>
-            <div className="basis-1/3 flex justify-center">
-              <button className="border rounded-md font-Kanit font-bold text-lg px-2 hover:cursor-pointer hover:bg-slate-200">
-                Like
-              </button>
+          ) : (
+            <div>
+              <div className="flex mt-4">
+                <div className="basis-1/3 flex justify-center">
+                  <button 
+                    className="border rounded-md font-Kanit font-bold text-lg px-4 py-1 hover:cursor-pointer bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white"
+                    onClick={() => {
+                      navigate(`/blog/edit?author=${post.authorName}&blogid=${blogId}`)
+                    }}
+                  >
+                    Edit
+                  </button>
+                </div>
+                <div className="basis-1/3 flex justify-center">
+                  <button className="border rounded-md font-Kanit font-bold text-lg px-4 py-1 hover:cursor-pointer bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white">
+                    Delete
+                  </button>
+                </div>
+                <div className="basis-1/3 flex justify-center">
+                  <button className="border rounded-md font-Kanit font-bold text-lg px-4 py-1 hover:cursor-pointer bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white">
+                    Share this 
+                  </button>
+                </div>
+              </div>
             </div>
-            <div className="basis-1/3 flex justify-center">
-              <button className="border rounded-md font-Kanit font-bold text-lg px-2 hover:cursor-pointer hover:bg-slate-200">
-                Upgrade Plan
-              </button>
-            </div>
-          </div>
+          )}
+
           <div className="mt-8">
             <div className="px-2 font-Kanit text-2xl">
               {post.content}

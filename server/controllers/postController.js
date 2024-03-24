@@ -37,7 +37,20 @@ async function handleGetNumberOfPosts(req, res, next) {
 }
 
 async function handleUpdatePost(req, res, next) {
-  console.log("Hello");
+  const blogId = req.params.id;
+  const { title, content } = req.body;
+
+  try {
+    const updatedPost = await Post.findByIdAndUpdate(blogId, {title: req.body.title, content: req.body.content});
+    res.status(200).json(updatedPost);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: "Failed to update blog",
+    });
+  }
+
+
 }
 
 async function handleGetPosts(req, res, next) {

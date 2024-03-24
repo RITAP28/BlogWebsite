@@ -13,6 +13,7 @@ import NewBlog from "./pages/BlogPages/NewBlog";
 import Profile from "./pages/Profile";
 import NormalProfile from "./pages/NormalProfile";
 import IndividualPosts from "./pages/IndividualPosts";
+import EditBlog from "./pages/EditBlog";
 
 const App = () => {
   const { isAuthenticated } = useSelector(state => state.user);
@@ -69,6 +70,13 @@ const App = () => {
               <IndividualPosts />
             </ProtectedRoutes>
           } />
+          <Route
+            path="/blog/edit"
+            element={
+              <ProtectedRoutes>
+                <EditBlog />
+              </ProtectedRoutes>
+            } />
 
       </Routes>
     </BrowserRouter>
