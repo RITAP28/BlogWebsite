@@ -32,18 +32,24 @@ const Login = () => {
         password: data.password,
       }, { withCredentials: true });
       console.log(res);
-      navigate(-1);
+      navigate('/');
       dispatch(SignInSuccess(data));
       window.alert(`Welcome ${data.username}`);
       // console.log(res);
     } catch (error) {
       dispatch(SignInFailure(error.message));
+      console.error(error);
     }
   };
   return (
     <div className="w-full h-screen bg-teal-950 font-mono">
       <div className="pt-8 flex justify-center items-center">
-        <h1 className="pt-[11rem] pb-4 font-Kanit font-bold text-5xl text-green-400">
+        <h1 
+          className="pt-[11rem] pb-4 font-Kanit font-bold text-5xl text-green-400"
+          onClick={() => {
+            navigate('/');
+          }}
+        >
           RitapBlogs
         </h1>
       </div>

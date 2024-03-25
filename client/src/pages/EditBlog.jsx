@@ -94,11 +94,19 @@ function EditBlog() {
           <div className="">
             <textarea
               id="title"
-              className="pl-2 py-4 text-3xl font-bold font-Kanit w-[90%] whitespace"
+              className="pl-2 py-4 text-3xl font-bold font-Kanit w-[90%] whitespace-normal"
               placeholder="Title"
               defaultValue={title}
               onChange={handleTitle}
             />
+            {/* <span
+              className="input pl-2 text-3xl font-bold font-Kanit w-[90%] focus:border-none"
+              role="textbox"
+              contentEditable
+              defaultValue={title}
+              onChange={handleTitle}>
+                {title}
+              </span> */}
           </div>
           {/* Content */}
           <div className="">

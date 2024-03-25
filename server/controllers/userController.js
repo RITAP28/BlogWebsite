@@ -32,9 +32,9 @@ async function handleNewUser(req, res){
       });
       await user.save();
       sendToken(user, 200, res);
-      res.status(200).json({
-          msg: "User saved successfully",
-      });
+      // res.status(200).json({
+      //     msg: "User saved successfully",
+      // });
   } catch (error) {
       console.error(error);
   };

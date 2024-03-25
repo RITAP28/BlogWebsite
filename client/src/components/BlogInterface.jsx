@@ -77,7 +77,7 @@ const BlogInterface = () => {
             {/* div for the category */}
             <div className="flex flex-row pt-2">
               <div className="pl-6 pb-4 font-Kanit basis-2/3">Category</div>
-              {blog.authorName === currentUser.username ? (
+              {( currentUser && blog.authorName === currentUser.username) ? (
                 <div className="basis-1/3 flex">
                   <div className="basis-1/2 pr-2">
                     <button className="bg-red-400 px-4 py-1 rounded-md bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 font-Kanit text-white hover:cursor-pointer">

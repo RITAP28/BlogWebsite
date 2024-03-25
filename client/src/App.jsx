@@ -14,9 +14,10 @@ import Profile from "./pages/Profile";
 import NormalProfile from "./pages/NormalProfile";
 import IndividualPosts from "./pages/IndividualPosts";
 import EditBlog from "./pages/EditBlog";
+import Onboarding from "./pages/OnboardingPages/Onboarding";
 
 const App = () => {
-  const { isAuthenticated } = useSelector(state => state.user);
+  const { isAuthenticated, onboarded } = useSelector((state) => state.user);
   return (
     <BrowserRouter>
       {/* <Navbar /> */}
@@ -25,10 +26,7 @@ const App = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<Home />} />
-        <Route
-          path="/blog"
-          element={<Blog />}
-        />
+        <Route path="/blog" element={<Blog />} />
 
         {/* protected routes */}
         <Route
@@ -45,7 +43,7 @@ const App = () => {
             <ProtectedRoutes>
               <NewBlog />
             </ProtectedRoutes>
-          }   
+          }
         />
         <Route
           path="/google/profile"
@@ -53,7 +51,7 @@ const App = () => {
             <ProtectedRoutes>
               <Profile />
             </ProtectedRoutes>
-          }   
+          }
         />
         <Route
           path="/profile"
@@ -61,23 +59,29 @@ const App = () => {
             <ProtectedRoutes>
               <NormalProfile />
             </ProtectedRoutes>
-          }   
+          }
         />
-        <Route 
+        <Route
           path="/profile/posts"
           element={
             <ProtectedRoutes>
               <IndividualPosts />
             </ProtectedRoutes>
-          } />
-          <Route
-            path="/blog/edit"
-            element={
-              <ProtectedRoutes>
-                <EditBlog />
-              </ProtectedRoutes>
-            } />
-
+          }
+        />
+        <Route
+          path="/blog/edit"
+          element={
+            <ProtectedRoutes>
+              <EditBlog />
+            </ProtectedRoutes>
+          }
+        />
+        {!onboarded && (
+          <>
+            <Route path="/getting-started/onboarding" element={<Onboarding />} />
+          </>
+        )}
       </Routes>
     </BrowserRouter>
   );

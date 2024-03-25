@@ -19,8 +19,8 @@ const Register = () => {
   } = useForm();
   const onSubmit = async (data, e) => {
     e.preventDefault();
+    setLoading(true);
     try{
-      setLoading(true);
       setErrorMessage(null);
       const res = await axios
       .post("http://localhost:3000/user/register", {
@@ -32,16 +32,15 @@ const Register = () => {
         if(!data.username || !data.email || !data.password){
           return setErrorMessage('Please fill out all fields');
         };
-        dispatch(SignUpSuccess(data));
-        navigate("/");
+        dispatch(SignUpSuccess());
+        console.log('You should go to Onboarding page');
+        navigate("/getting-started/onboarding");
         console.log(data);
-        setLoading(false);
       });
-
     } catch(err){
       console.error(err);
-      setLoading(false);
     }
+    setLoading(false);
   };
   return (
     <div className="w-full h-screen bg-teal-950 font-mono">
