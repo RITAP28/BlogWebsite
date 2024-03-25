@@ -50,7 +50,7 @@ function Onboarding() {
               RitapBlogs
             </div>
             <div className="flex justify-center font-Kanit text-4xl font-bold text-white">
-              Onboarding/Page/{currentPage}
+              Currently Onboarding You
             </div>
           </div>
         </div>
