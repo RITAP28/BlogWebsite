@@ -113,7 +113,7 @@ function EditBlog() {
             {/* <TipTapEditor /> */}
             <textarea
               id="content"
-              className="w-full pl-2 py-4 font-sans text-lg h-screen"
+              className="w-[90%] pl-2 py-4 font-sans text-lg h-screen"
               placeholder="Write Here"
               defaultValue={content}
               onChange={handleContent}
