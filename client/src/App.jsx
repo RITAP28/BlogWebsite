@@ -17,7 +17,7 @@ import EditBlog from "./pages/EditBlog";
 import Onboarding from "./pages/OnboardingPages/Onboarding";
 
 const App = () => {
-  const { isAuthenticated, onboarded } = useSelector((state) => state.user);
+  const { isAuthenticated } = useSelector((state) => state.user);
   return (
     <BrowserRouter>
       {/* <Navbar /> */}
@@ -77,11 +77,12 @@ const App = () => {
             </ProtectedRoutes>
           }
         />
-        {!onboarded && (
+        {/* {!onboarded && (
           <>
             <Route path="/getting-started/onboarding" element={<Onboarding />} />
           </>
-        )}
+        )} */}
+        <Route path="/getting-started/onboarding" element={<Onboarding />} />
       </Routes>
     </BrowserRouter>
   );

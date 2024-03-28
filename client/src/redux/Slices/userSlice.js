@@ -8,12 +8,6 @@ const initialState = {
     Google: false,
     Normal: false,
     hybrid: false,
-    onboarded: false,
-    onboardingData1: null,
-    onboardingData2: null,
-    onboardingData3: null,
-    onboard1Comp: false,
-    onboard2Comp: false,
     subscribed: false,
 }
 
@@ -21,9 +15,17 @@ export const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
-        SignUpSuccess: (state) => {
+        SignUpSuccess: (state, action) => {
+            state.currentUser = action.payload;
             state.loading = false;
             state.error = null;
+            state.isAuthenticated = true;
+        },
+        ExistingUser: (state, action) => {
+            state.currentUser = action.payload;
+            state.loading = false;
+            state.error = null;
+            state.isAuthenticated = true;
         },
         SignInStart: (state) => {
             state.loading = true;
@@ -53,12 +55,6 @@ export const userSlice = createSlice({
             state.Google = false;
             state.Normal = false;
             state.hybrid = false;
-            state.onboarded = false;
-            state.onboard1Comp = false;
-            state.onboard2Comp = false;
-            state.onboardingData1 = null;
-            state.onboardingData2 = null;
-            state.onboardingData3 = null;
         },
         SignInSuccessWithGoogle: (state, action) => {
             state.currentUser = action.payload;
@@ -69,38 +65,8 @@ export const userSlice = createSlice({
             state.Normal = false;
             state.hybrid = false;
         },
-        UserOnboarded: (state, action) => {
-            state.onboardingData3 = action.payload;
-            state.isAuthenticated = true;
-            // state.onboard3Comp = true;
-            state.loading = false;
-            state.error = null;
-            state.onboarded = true;
-        },
-        Onboarding1Completed: (state, action) => {
-            state.onboardingData1 = action.payload;
-            state.onboard1Comp = true;
-            state.error = null;
-            state.loading = false;
-        },
-        Onboarding2Completed: (state, action) => {
-            state.onboardingData2 = action.payload;
-            state.onboard2Comp = true;
-            state.error = null;
-            state.loading = false;
-        },
-        Onboarding1Skipped: (state) => {
-            state.loading = false;
-            state.error = null;
-            state.onboard1Comp = false;
-        },
-        Onboarding2Skipped: (state) => {
-            state.loading = false;
-            state.error = null;
-            state.onboard2Comp = false;
-        }
     }
 });
 
-export const { SignUpSuccess, SignInFailure, SignInStart, SignInSuccess, UserNotExist, SignInSuccessWithGoogle, UserOnboarded, Onboarding1Completed, Onboarding2Completed, Onboarding1Skipped, Onboarding2Skipped } = userSlice.actions;
+export const { SignUpSuccess, SignInFailure, SignInStart, SignInSuccess, UserNotExist, SignInSuccessWithGoogle, ExistingUser } = userSlice.actions;
 export default userSlice.reducer;

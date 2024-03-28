@@ -9,5 +9,6 @@ router.post('/login', limiter, userController.handleLogin);
 router.post('/logout', userController.handleLogout);
 router.post('/google', userController.handleGoogleAuth);
 router.get("/me", verifyToken, userController.handleGetUser);
+router.post('/onboarding', verifyToken, userController.handleOnboardingData);
 
 module.exports = router;

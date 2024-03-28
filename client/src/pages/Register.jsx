@@ -32,7 +32,7 @@ const Register = () => {
         if(!data.username || !data.email || !data.password){
           return setErrorMessage('Please fill out all fields');
         };
-        dispatch(SignUpSuccess());
+        dispatch(SignUpSuccess(data));
         console.log('You should go to Onboarding page');
         navigate("/getting-started/onboarding");
         console.log(data);
@@ -118,7 +118,7 @@ const Register = () => {
           )};
         </form>
         <p className="text-center text-green-400 text-xs">
-          &copy;2020 Acme Corp. All rights reserved.
+          &copy;2024 RitapBlogs. All rights reserved.
         </p>
       </div>
     </div>

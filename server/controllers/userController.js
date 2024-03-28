@@ -96,7 +96,34 @@ async function handleGetUser(req, res, next) {
     succcess: true,
     user,
   })  
-}
+};
+
+async function handleOnboardingData(req, res, next){
+  const { onboardingData1, onboardingData2, onboardingData3 } = req.body;
+
+  const user = await User.findOne({ username: req.user.username });
+
+  if(!onboardingData1 || !onboardingData3){
+    return next(errorHandler(400, 'Please fill the last field'));
+  };
+
+  user.onboarded = true;
+  user.onboardingData1 = onboardingData1;
+  if(onboardingData2){
+    user.onboardingData2 = onboardingData2;
+  }else{
+    user.onboardingData2 = null;
+  };
+  user.onboardingData3 = onboardingData3;
+  
+  res.json({
+    success: true,
+    onboardingData1,
+    onboardingData2,
+    onboardingData3
+  });
+
+};
 
 async function handleGoogleAuth(req, res, next) {
   const { email, username, googlePhotoURL } = req.body;
@@ -125,4 +152,4 @@ async function handleGoogleAuth(req, res, next) {
   } 
 }
 
-module.exports = { handleNewUser, handleLogin, handleLogout, handleGoogleAuth, handleGetUser };
+module.exports = { handleNewUser, handleLogin, handleLogout, handleGoogleAuth, handleGetUser, handleOnboardingData };

@@ -1,13 +1,6 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import {
-  UserOnboarded,
-  Onboarding1Completed,
-  Onboarding2Completed,
-  Onboarding1Skipped,
-  Onboarding2Skipped,
-} from "../../redux/Slices/userSlice";
+import axios from 'axios';
 
 function Onboarding() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -15,30 +8,25 @@ function Onboarding() {
   const [titleTwo, setTitleTwo] = useState();
   const [titleThree, setTitleThree] = useState();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const nextPage = () => {
     setCurrentPage(currentPage + 1);
   };
 
-  function handleSubmitOne() {
-    console.log("titleone", titleOne);
-    dispatch(Onboarding1Completed(titleOne));
-    nextPage();
-  };
-
-  function handleSubmitTwo() {
-    console.log("titletwo", titleTwo);
-    dispatch(Onboarding2Completed(titleTwo));
-    nextPage();
-  };
-
-  const handleSubmitThree = () => {
-    console.log("titlethree", titleThree);
-    dispatch(UserOnboarded(titleThree));
-    window.alert("Congratulations, you have been onboarded!");
-    navigate("/login");
-  };
+  const getOnboarded = async () => {
+    try {
+      const res = await axios.post('http://localhost:3000/user/onboarding', {
+        onboardingData1: titleOne,
+        onboardingData2: titleTwo,
+        onboardingData3: titleThree,
+      }, { withCredentials: true });
+      console.log(res);
+      window.alert('Congratulations, you have been onboarded');
+      navigate('/');
+    } catch (error) {
+      console.error(error);
+    }
+  }
   
   return (
     <>
@@ -49,7 +37,7 @@ function Onboarding() {
             <div className="flex justify-center font-Kanit text-3xl font-bold underline text-green-400">
               RitapBlogs
             </div>
-            <div className="flex justify-center font-Kanit text-4xl font-bold text-white">
+            <div className="flex justify-center font-Kanit text-3xl font-bold text-white">
               Currently Onboarding You
             </div>
           </div>
@@ -74,22 +62,13 @@ function Onboarding() {
                   }}
                 />
               </div>
-              <div className="basis-1/4 flex justify-evenly pt-10">
+              <div className="basis-1/4 flex justify-center pt-10">
                 <div className="">
                   <button
                     className="px-10 rounded-md font-Kanit text-xl text-white hover:cursor-pointer py-2 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"
                     onClick={() => {
-                      dispatch(Onboarding1Skipped());
                       nextPage();
                     }}
-                  >
-                    Skip
-                  </button>
-                </div>
-                <div className="">
-                  <button
-                    className="px-10 rounded-md font-Kanit text-xl text-white hover:cursor-pointer py-2 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"
-                    onClick={handleSubmitOne}
                   >
                     Next
                   </button>
@@ -117,22 +96,13 @@ function Onboarding() {
                   }}
                 />
               </div>
-              <div className="basis-1/4 flex justify-evenly pt-10">
+              <div className="basis-1/4 flex justify-center pt-10">
                 <div className="">
                   <button
                     className="px-10 rounded-md font-Kanit text-xl text-white hover:cursor-pointer py-2 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"
                     onClick={() => {
-                      dispatch(Onboarding2Skipped());
                       nextPage();
                     }}
-                  >
-                    Skip
-                  </button>
-                </div>
-                <div className="">
-                  <button
-                    className="px-10 rounded-md font-Kanit text-xl text-white hover:cursor-pointer py-2 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"
-                    onClick={handleSubmitTwo}
                   >
                     Next
                   </button>
@@ -167,7 +137,7 @@ function Onboarding() {
                     className="px-4 rounded-md font-Kanit text-xl text-white hover:cursor-pointer py-2 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"
                     onClick={() => {
                       window.alert("First sign-in to explore our plans");
-                      navigate("/login");
+                      navigate("/plans");
                     }}
                   >
                     Explore Plans
@@ -176,7 +146,10 @@ function Onboarding() {
                 <div className="">
                   <button
                     className="px-4 rounded-md font-Kanit text-xl text-white hover:cursor-pointer py-2 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"
-                    onClick={handleSubmitThree}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      getOnboarded();
+                    }}
                   >
                     Login to Continue
                   </button>
